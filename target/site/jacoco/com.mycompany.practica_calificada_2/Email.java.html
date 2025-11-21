@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Email.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">practica_calificada_2</a> &gt; <a href="index.source.html" class="el_package">com.mycompany.practica_calificada_2</a> &gt; <span class="el_source">Email.java</span></div><h1>Email.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.practica_calificada_2;
+
+/**
+ *
+ * @author ALEX-LAPTOP
+ */
+<span class="fc" id="L11">public class Email {</span>
+    
+        public boolean isValidEmail(String email) {
+<span class="fc bfc" id="L14" title="All 4 branches covered.">        if (email == null || email.isEmpty()) {</span>
+<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;El correo no puede ser nulo o vacío&quot;);</span>
+        }
+
+<span class="fc" id="L18">        email = email.trim();</span>
+
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (email.length() &lt; 6) {</span>
+<span class="nc" id="L21">            return false;</span>
+        }
+
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (email.length() &gt; 254) {</span>
+<span class="nc" id="L25">            return false;</span>
+        }
+
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if (email.contains(&quot; &quot;)) {</span>
+<span class="nc" id="L29">            return false;</span>
+        }
+<span class="fc" id="L31">        int indiceArroba = email.indexOf('@');</span>
+<span class="fc" id="L32">        int ultimoIndiceArroba = email.lastIndexOf('@');</span>
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (indiceArroba == -1) {</span>
+          
+<span class="fc" id="L36">            return false;</span>
+        }
+
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (indiceArroba != ultimoIndiceArroba) {</span>
+            // más de un @
+<span class="nc" id="L41">            return false;</span>
+        }
+
+
+<span class="fc" id="L45">        String parteLocal = email.substring(0, indiceArroba);</span>
+<span class="fc" id="L46">        String dominio = email.substring(indiceArroba + 1);</span>
+
+
+<span class="pc bpc" id="L49" title="2 of 4 branches missed.">        if (parteLocal.length() == 0 || dominio.length() == 0) {</span>
+<span class="nc" id="L50">            return false;</span>
+        }
+
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (parteLocal.charAt(0) == '.' ||</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            parteLocal.charAt(parteLocal.length() - 1) == '.') {</span>
+<span class="fc" id="L56">            return false;</span>
+        }
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (int i = 0; i &lt; parteLocal.length() - 1; i++) {</span>
+<span class="pc bpc" id="L60" title="1 of 4 branches missed.">            if (parteLocal.charAt(i) == '.' &amp;&amp; parteLocal.charAt(i + 1) == '.') {</span>
+<span class="fc" id="L61">                return false;</span>
+            }
+        }
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (int i = 0; i &lt; parteLocal.length(); i++) {</span>
+<span class="fc" id="L65">            char c = parteLocal.charAt(i);</span>
+<span class="pc bpc" id="L66" title="7 of 8 branches missed.">            if (!Character.isLetterOrDigit(c) &amp;&amp; c != '.' &amp;&amp; c != '-' &amp;&amp; c != '_') {</span>
+<span class="nc" id="L67">                return false;</span>
+            }
+        }
+
+<span class="fc" id="L71">        int indicePunto = dominio.indexOf('.');</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (indicePunto == -1) {</span>
+<span class="fc" id="L73">            return false;</span>
+        }
+
+<span class="fc" id="L76">        int indiceUltimoPunto = dominio.lastIndexOf('.');</span>
+<span class="fc" id="L77">        String nombreDominio = dominio.substring(0, indiceUltimoPunto);</span>
+<span class="fc" id="L78">        String extension = dominio.substring(indiceUltimoPunto + 1);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (nombreDominio.length() &lt; 1) {</span>
+<span class="nc" id="L80">            return false;</span>
+        }
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (extension.length() &lt; 2) {</span>
+<span class="nc" id="L83">            return false;</span>
+        }
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (int i = 0; i &lt; dominio.length(); i++) {</span>
+<span class="fc" id="L87">            char c = dominio.charAt(i);</span>
+<span class="pc bpc" id="L88" title="3 of 6 branches missed.">            if (!Character.isLetterOrDigit(c) &amp;&amp; c != '.' &amp;&amp; c != '-') {</span>
+<span class="nc" id="L89">                return false;</span>
+            }
+        }
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        for (int i = 0; i &lt; extension.length(); i++) {</span>
+<span class="fc" id="L94">            char c = extension.charAt(i);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            if (!Character.isLetter(c)) {</span>
+<span class="nc" id="L96">                return false;</span>
+            }
+        }
+<span class="fc" id="L99">        return true;</span>
+    }
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

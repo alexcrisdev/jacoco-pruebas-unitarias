@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>caso_one.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">practica_calificada_2</a> &gt; <a href="index.source.html" class="el_package">com.mycompany.practica_calificada_2</a> &gt; <span class="el_source">caso_one.java</span></div><h1>caso_one.java</h1><pre class="source lang-java linenums">/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.practica_calificada_2;
+
+/**
+ *
+ * @author ALEX-LAPTOP
+ */
+<span class="nc" id="L11">public class caso_one {</span>
+    
+<span class="fc" id="L13">    private static String CARACTERES_ESPECIALES = &quot;!@#$%^&amp;*()_-+={}[]|\\\\:;\\\&quot;'&lt;&gt;,.?/&quot;;</span>
+    
+    public static boolean isValid(String password){
+        
+<span class="fc bfc" id="L17" title="All 4 branches covered.">        if (password == null || password.isEmpty()){</span>
+<span class="fc" id="L18">            throw new IllegalArgumentException(&quot;La contraseña no puede ser nula o vacía.&quot;);</span>
+        }
+        
+<span class="fc" id="L21">        int longitud = password.length();</span>
+<span class="pc bpc" id="L22" title="1 of 4 branches missed.">        if (longitud &lt; 8 || longitud &gt; 64){</span>
+<span class="fc" id="L23">            return false;</span>
+        }
+        
+        
+<span class="fc" id="L27">        boolean tieneMayuscula = false;</span>
+<span class="fc" id="L28">        boolean tieneMinuscula = false;</span>
+<span class="fc" id="L29">        boolean tieneDigito = false;</span>
+<span class="fc" id="L30">        boolean tieneEspecial = false;</span>
+        
+       
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for (int i = 0; i &lt; longitud; i++){</span>
+<span class="fc" id="L34">            char c = password.charAt(i);</span>
+            
+            
+<span class="fc bfc" id="L37" title="All 2 branches covered.">            if (c == ' '){</span>
+<span class="fc" id="L38">                return false;</span>
+            }
+            
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            if(Character.isUpperCase(c)){</span>
+<span class="fc" id="L42">                tieneMayuscula = true;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            } else if(Character.isLowerCase(c)){</span>
+<span class="fc" id="L44">                tieneMinuscula = true;</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            } else if(Character.isDigit(c)){</span>
+<span class="fc" id="L46">                tieneDigito = true;</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            } else if(CARACTERES_ESPECIALES.indexOf(c) &gt;= 0){</span>
+<span class="fc" id="L48">                tieneEspecial = true;</span>
+            } else{
+<span class="nc" id="L50">                return false;</span>
+            }
+        }
+        
+        //5. Debe cumplir todos los requisitos
+<span class="pc bpc" id="L55" title="3 of 8 branches missed.">        return tieneMayuscula &amp;&amp; tieneMinuscula &amp;&amp; tieneDigito &amp;&amp; tieneEspecial;        </span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
