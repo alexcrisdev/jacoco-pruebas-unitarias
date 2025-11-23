@@ -8,7 +8,7 @@ package com.mycompany.practica_calificada_2;
  *
  * @author ALEX-LAPTOP
  */
-public class caso_one {
+public class password_validator {
     
     private static String CARACTERES_ESPECIALES = "!@#$%^&*()_-+={}[]|\\\\:;\\\"'<>,.?/";
     
@@ -29,10 +29,9 @@ public class caso_one {
         boolean tieneDigito = false;
         boolean tieneEspecial = false;
         
-       
+        
         for (int i = 0; i < longitud; i++){
             char c = password.charAt(i);
-            
             
             if (c == ' '){
                 return false;
@@ -51,8 +50,6 @@ public class caso_one {
             }
         }
         
-        //5. Debe cumplir todos los requisitos
         return tieneMayuscula && tieneMinuscula && tieneDigito && tieneEspecial;        
-    }
-    
+    }    
 }

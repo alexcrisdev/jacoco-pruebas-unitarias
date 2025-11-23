@@ -58,8 +58,7 @@
                                             <counter>LINE</counter>
                                             <!-- Ratio de cobertura -->
                                             <value>COVEREDRATIO</value>
-                                            <!-- Mínimo 80% -->
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.98</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

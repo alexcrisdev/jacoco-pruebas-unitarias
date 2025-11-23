@@ -15,8 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author ALEX-LAPTOP
  */
-public class caso_oneTest {
+public class password_validatorTest {
     
+    @BeforeEach
+    void setup(){
+        new password_validator();
+    }
     
     @Test
     void contraseniaNull_lanzaIllegal(){
@@ -24,9 +28,10 @@ public class caso_oneTest {
         
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> caso_one.isValid(password)
+                () -> password_validator.isValid(password)
         );
         
+        //Assert
         assertEquals("La contraseña no puede ser nula o vacía.", exception.getMessage());        
     }
     
@@ -37,9 +42,10 @@ public class caso_oneTest {
         
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
-                () -> caso_one.isValid(password)
+                () -> password_validator.isValid(password)
         );
         
+        //Assert
         assertEquals("La contraseña no puede ser nula o vacía.", exception.getMessage());
     }
     
@@ -48,7 +54,7 @@ public class caso_oneTest {
     void contraseniaValida_lanzaTrue(){
         String password = "Secure123!";
         
-        boolean result = caso_one.isValid(password);
+        boolean result = password_validator.isValid(password);
         
         assertAll(
                 "Validación de contraseña válida",
@@ -62,7 +68,7 @@ public class caso_oneTest {
     void contraseniaCorta_lanzaFalse(){
         String password = "Abc1!d";
         
-        boolean result = caso_one.isValid(password);
+        boolean result = password_validator.isValid(password);
         
         assertFalse(result, "La contraseña con menos de 8 caracteres debe ser inválida");
     }
@@ -72,7 +78,7 @@ public class caso_oneTest {
     void contraseniaSinMayuscula_lanzaFalse(){
         String password = "nosecura";
         
-        boolean result = caso_one.isValid(password);
+        boolean result = password_validator.isValid(password);
         
         assertFalse(result, "La contraseña sin mayúsculas ni dígitos debe ser inválida");
     }
@@ -82,8 +88,55 @@ public class caso_oneTest {
     void contraseniaConEspacio_lanzaFalse(){
         String password = "Secure 123!";
         
-        boolean result = caso_one.isValid(password);
+        boolean result = password_validator.isValid(password);
         
         assertFalse(result, "La contraseña con espacios en blanco debe ser inválida");
     }
+    
+    @Test
+    void contraseniaMuyLarga_lanzaFalse() {
+        // Si usas Java 11+
+        String password = "A".repeat(65);
+
+        boolean result = password_validator.isValid(password);
+
+        assertFalse(result, "La contraseña de más de 64 caracteres debe ser inválida");
+    }
+
+    @Test
+    void contraseniaConCaracterNoPermitido_lanzaFalse() {
+        String password = "Secure123€";   
+
+        boolean result = password_validator.isValid(password);
+
+        assertFalse(result, "La contraseña con caracteres no permitidos debe ser inválida");
+    }
+
+    @Test
+    void contraseniaSinMinusculas_lanzaFalse() {
+        String password = "SECURE123!";
+
+        boolean result = password_validator.isValid(password);
+
+        assertFalse(result, "La contraseña sin minúsculas debe ser inválida");
+    }
+
+    @Test
+    void contraseniaSinDigito_lanzaFalse() {
+        String password = "SecurePass!";
+
+        boolean result = password_validator.isValid(password);
+
+        assertFalse(result, "La contraseña sin dígitos debe ser inválida");
+    }
+
+    @Test
+    void contraseniaSinCaracterEspecial_lanzaFalse() {
+        String password = "Secure1234";
+
+        boolean result = password_validator.isValid(password);
+
+        assertFalse(result, "La contraseña sin caracteres especiales debe ser inválida");
+    }
+    
 }

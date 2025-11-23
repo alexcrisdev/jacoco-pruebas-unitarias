@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author ALEX-LAPTOP
  */
-public class InventoryManagerTest {
+public class inventory_managerTest {
     
     @Test
     void agregarProductoNuevoEnInventarioVacio() {
         
-        InventoryManager manager = new InventoryManager();
+        inventory_manager manager = new inventory_manager();
 
        
         manager.addItem("Laptop", 5);
@@ -42,7 +42,7 @@ public class InventoryManagerTest {
     @Test
     void agregarElMismoProductoDosVeces() {
         
-        InventoryManager manager = new InventoryManager();
+        inventory_manager manager = new inventory_manager();
 
         
         manager.addItem("Laptop", 3);
@@ -62,8 +62,8 @@ public class InventoryManagerTest {
 
     @Test
     void agregarProductoConCantidadNegativa() {
-        // Arrange
-        InventoryManager manager = new InventoryManager();
+        
+        inventory_manager manager = new inventory_manager();
 
         
         IllegalArgumentException exception = assertThrows(
@@ -82,7 +82,7 @@ public class InventoryManagerTest {
     @Test
     void agregarConProductoCero() {
         
-        InventoryManager manager = new InventoryManager();
+        inventory_manager manager = new inventory_manager();
 
         
         IllegalArgumentException exception = assertThrows(
@@ -102,7 +102,7 @@ public class InventoryManagerTest {
     @Test
     void agregarProductoConNombreVacio() {
         
-        InventoryManager manager = new InventoryManager();
+        inventory_manager manager = new inventory_manager();
         String emptyName = "";
 
         
@@ -123,7 +123,7 @@ public class InventoryManagerTest {
     @Test
     void dadoCantidad_mayoralpermitido() {
        
-        InventoryManager manager = new InventoryManager();
+        inventory_manager manager = new inventory_manager();
 
         
         IllegalArgumentException exception = assertThrows(
@@ -138,6 +138,57 @@ public class InventoryManagerTest {
 
         assertFalse(manager.getInventory().containsKey("Monitor"),
                 "El inventario no debe contener 'Monitor' cuando la operación falla");
+    }   
+    
+    @Test
+    void agregarProductoConNombreNull_lanzaIllegal() {
+        inventory_manager manager = new inventory_manager();
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> manager.addItem(null, 5)
+        );
+
+        assertEquals("El nombre del producto no puede estar vacío", ex.getMessage());
+        assertTrue(manager.getInventory().isEmpty());
     }
+    
+    @Test
+    void agregarProductoConNombreMuyCorto_lanzaIllegal() {
+        
+        inventory_manager manager = new inventory_manager();
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> manager.addItem("A", 5)
+        );
+
+        assertEquals("El nombre del producto debe tener al menos 2 caracteres", ex.getMessage());
+        assertTrue(manager.getInventory().isEmpty());
+    }
+    
+    @Test
+    void agregarProductoConNombreMuyLargo_lanzaIllegal() {
+        inventory_manager manager = new inventory_manager();
+        String nombreLargo = "A".repeat(51); 
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> manager.addItem(nombreLargo, 5)
+        );
+
+        assertEquals("El nombre del producto no puede exceder 50 caracteres", ex.getMessage());
+        assertTrue(manager.getInventory().isEmpty());
+    }
+    
+    @Test
+    void getStockConNombreNull_retornaCero() {
+        inventory_manager manager = new inventory_manager();
+        manager.addItem("Laptop", 5);   
+
+        int stockNull = manager.getStock(null);
+
+        assertEquals(0, stockNull);
+    }        
     
 }

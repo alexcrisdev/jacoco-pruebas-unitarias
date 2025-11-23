@@ -17,66 +17,106 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class EmailTest {
     
-    @Test
-    void testCorreoNuloLanzaExcepcion() {
-        Email emailObj = new Email();
+    private Email email;
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> emailObj.isValidEmail(null)
-        );
-
-        assertEquals("El correo no puede ser nulo o vacío", exception.getMessage());
+    @BeforeEach
+    void setUp() {
+        email = new Email();
     }
 
-    @Test
-    void testCorreoVacioLanzaExcepcion() {
-        Email emailObj = new Email();
-
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> emailObj.isValidEmail("")
-        );
-
-        assertEquals("El correo no puede ser nulo o vacío", exception.getMessage());
-    }
 
     @Test
-    void testCorreosSinArrobaODominioInvalido() {
-        Email emailObj = new Email();
-
+    void correosNulosOVaciosLanzanExcepcion() {
         assertAll(
-                () -> assertFalse(emailObj.isValidEmail("usuario.gmail.com")),
-                () -> assertFalse(emailObj.isValidEmail("usuario@com"))
+                () -> {
+                    IllegalArgumentException ex = assertThrows(
+                            IllegalArgumentException.class,
+                            () -> email.isValidEmail(null)
+                    );
+                    assertEquals("El correo no puede ser nulo o vacío", ex.getMessage());
+                },
+                () -> {
+                    IllegalArgumentException ex = assertThrows(
+                            IllegalArgumentException.class,
+                            () -> email.isValidEmail("")
+                    );
+                    assertEquals("El correo no puede ser nulo o vacío", ex.getMessage());
+                }
         );
     }
 
-    @Test
-    void testCorreoValidoFormatoCorrecto() {
-        Email emailObj = new Email();
-
-        boolean resultado = emailObj.isValidEmail("cliente123@tienda.com");
-
-        assertTrue(resultado);
-    }
 
     @Test
-    void testCorreoLongitudMinimaValido() {
-        Email emailObj = new Email();
-
-        boolean resultado = emailObj.isValidEmail("a@b.co");
-
-        assertTrue(resultado);
-    }
-
-    @Test
-    void testProblemasParteLocal() {
-        Email emailObj = new Email();
-
+    void correosSinArrobaODominioSinPuntoDevuelvenFalse() {
         assertAll(
-                () -> assertFalse(emailObj.isValidEmail(".usuario@tienda.com")),
-                () -> assertFalse(emailObj.isValidEmail("usuario.@tienda.com")),
-                () -> assertFalse(emailObj.isValidEmail("us..uario@tienda.com"))
+                () -> assertFalse(email.isValidEmail("usuario.gmail.com")),
+                () -> assertFalse(email.isValidEmail("usuario@com"))
         );
     }
+
+
+    @Test
+    void correosValidosConFormatoCorrecto() {
+        assertAll(
+                () -> assertTrue(email.isValidEmail("cliente123@tienda.com")),
+                () -> assertTrue(email.isValidEmail("a@b.co")),
+                () -> assertTrue(email.isValidEmail("user.name@dominio.com")),
+                () -> assertTrue(email.isValidEmail("user-name@dominio.com")),
+                () -> assertTrue(email.isValidEmail("user_name@dominio.com")),
+                () -> assertTrue(email.isValidEmail("user@sub-dominio.com"))
+        );
+    }
+
+
+    @Test
+    void correosConLongitudInvalidaDevuelvenFalse() {
+        assertAll(
+                () -> assertFalse(email.isValidEmail("a@b.c")),  
+                () -> {
+                    String local = "a".repeat(250);            
+                    String correo = local + "@b.com";
+                    assertFalse(email.isValidEmail(correo));
+                }
+        );
+    }
+
+
+    @Test
+    void correosConEspaciosOMultiplesArrobasDevuelvenFalse() {
+        assertAll(
+                () -> assertFalse(email.isValidEmail("cliente 123@tienda.com")),
+                () -> assertFalse(email.isValidEmail("usu@ario@dominio.com"))
+        );
+    }
+
+
+    @Test
+    void correosConParteLocalODominioVaciosDevuelvenFalse() {
+        assertAll(
+                () -> assertFalse(email.isValidEmail("@tienda.com")),
+                () -> assertFalse(email.isValidEmail("usuario@"))
+        );
+    }
+
+
+    @Test
+    void correosConProblemasDePuntosEnParteLocalDevuelvenFalse() {
+        assertAll(
+                () -> assertFalse(email.isValidEmail(".usuario@tienda.com")),
+                () -> assertFalse(email.isValidEmail("usuario.@tienda.com")),
+                () -> assertFalse(email.isValidEmail("us..uario@tienda.com"))
+        );
+    }
+
+
+    @Test
+    void correosConCaracteresInvalidosEnParteLocalODominioDevuelvenFalse() {
+        assertAll(
+                () -> assertFalse(email.isValidEmail("us$uario@tienda.com")), // local con $
+                () -> assertFalse(email.isValidEmail("cliente@.com")),        // dominio sin nombre
+                () -> assertFalse(email.isValidEmail("usuario@dom.c")),       // extensión de 1 char
+                () -> assertFalse(email.isValidEmail("cliente@tie_nda.com")), // dominio con _
+                () -> assertFalse(email.isValidEmail("cliente@tienda.c0m"))   // extensión con número
+        );
+    }   
 }
